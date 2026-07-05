@@ -2,7 +2,7 @@
 CONF_DIR=/data/adb/odin3_hdr_fix
 
 ui_print "*******************************"
-ui_print " Odin 3 HDR Brightness Fix"
+ui_print " Odin 3 HDR Fix"
 ui_print " v1.1.0"
 ui_print "*******************************"
 

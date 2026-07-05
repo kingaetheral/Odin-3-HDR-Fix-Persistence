@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Odin 3 HDR Brightness Fix - boot service
+# Odin 3 HDR Fix - boot service
 
 CONF=/data/adb/odin3_hdr_fix/config.conf
 LOG=/data/adb/odin3_hdr_fix/hdr.log
