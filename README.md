@@ -91,9 +91,20 @@ After editing the config, reboot.
 
 ## GPU Composition Tradeoff
 
-When `DISABLE_HW_OVERLAYS=1`, Android uses the GPU to composite display layers instead of letting display hardware handle overlays. This can slightly increase power use and heat, especially in GPU-heavy apps or games.
+When `DISABLE_HW_OVERLAYS=1`, Android stops using hardware overlay planes for final display composition and forces SurfaceFlinger to use GPU/client composition instead.
 
-For normal HDR video and UI use, the cost is usually small. For demanding games or emulators, test both modes:
+On Android, the Hardware Composer normally chooses the most efficient way to put layers on screen. When overlay planes work correctly, they can let display hardware scan out multiple layers directly instead of having the GPU blend them into one final buffer. That can save memory bandwidth, power, and GPU time.
+
+Forcing GPU composition is therefore a workaround, not a free optimization. The real cost depends on what is on screen:
+
+- It can increase power use because the GPU and memory system may do composition work that display hardware could have handled.
+- It can reduce GPU headroom because games, emulators, and other GPU-heavy apps share the same GPU that is now also doing final composition.
+- It can increase heat or affect frame pacing if the device is already close to its GPU or bandwidth limits.
+- It may be barely noticeable in lighter UI/video cases, or when the hardware overlay path was already unavailable for the current layer stack.
+
+This option is enabled by default because it fixes the known broken HDR composition path on affected Odin 3 setups. Treat it as a compatibility fix: use it if HDR is dim, washed out, or incorrectly mapped with hardware overlays enabled.
+
+For battery or performance testing:
 
 - If HDR still looks correct with `DISABLE_HW_OVERLAYS=0`, leave it off for better efficiency.
 - If HDR becomes dim, washed out, or incorrectly mapped, keep `DISABLE_HW_OVERLAYS=1`.
