@@ -93,14 +93,17 @@ After editing the config, reboot.
 
 When `DISABLE_HW_OVERLAYS=1`, Android stops using hardware overlay planes for final display composition and forces SurfaceFlinger to use GPU/client composition instead.
 
-On Android, the Hardware Composer normally chooses the most efficient way to put layers on screen. When overlay planes work correctly, they can let display hardware scan out multiple layers directly instead of having the GPU blend them into one final buffer. That can save memory bandwidth, power, and GPU time.
+On Android, the Hardware Composer normally chooses how to put layers on screen. When overlay planes work correctly, they can let display hardware scan out multiple layers directly instead of having the GPU blend them into one final buffer. That can save memory bandwidth, power, and GPU time.
 
-Forcing GPU composition is therefore a workaround, not a free optimization. The real cost depends on what is on screen:
+Forcing GPU composition is therefore best understood as a compatibility workaround. It is not automatically bad, and it is not automatically faster. The real effect depends on the current layer stack, refresh rate, app, driver behavior, and whether the hardware-overlay path was working correctly in the first place.
 
-- It can increase power use because the GPU and memory system may do composition work that display hardware could have handled.
-- It can reduce GPU headroom because games, emulators, and other GPU-heavy apps share the same GPU that is now also doing final composition.
-- It can increase heat or affect frame pacing if the device is already close to its GPU or bandwidth limits.
-- It may be barely noticeable in lighter UI/video cases, or when the hardware overlay path was already unavailable for the current layer stack.
+Possible tradeoffs:
+
+- It may increase power use because the GPU and memory system can be asked to do composition work that display hardware might otherwise handle.
+- It may reduce GPU headroom in games, emulators, or other GPU-heavy apps if the device is already close to its limits.
+- It may affect heat or frame pacing in demanding cases.
+- It may make little or no practical difference when the layer stack was already falling back to GPU composition, or when the extra composition work is small compared with the app's own rendering.
+- It may improve correctness, and sometimes perceived smoothness, if the hardware-overlay path is buggy for HDR.
 
 This option is enabled by default because it fixes the known broken HDR composition path on affected Odin 3 setups. Treat it as a compatibility fix: use it if HDR is dim, washed out, or incorrectly mapped with hardware overlays enabled.
 
