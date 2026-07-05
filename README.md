@@ -1,6 +1,6 @@
 # Odin 3 HDR Fix & Persistence
 
-Magisk module · v1.1.0 · Unihertz Odin 3
+Magisk module · v1.1.0 · Odin 3
 
 HDR content on the Odin 3 renders dim and washed out. This module fixes it — systemlessly — and keeps the fix applied across reboots.
 
