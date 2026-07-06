@@ -2,7 +2,7 @@
 
 Magisk module for improving HDR behavior on the AYN Odin 3.
 
-This module is meant to fix the Android-side HDR configuration that makes HDR content look dim, dull, or incorrectly tone-mapped on affected Odin 3 units. It does not flash partitions. Everything it changes is systemless and can be removed by uninstalling the module and rebooting.
+This is a Systemless Odin 3 HDR fix. Adds the correct 782-nit panel display config, applies HDR display properties at boot, and includes a configurable SurfaceFlinger watchdog for the HDR composition workaround. Designed to pair with the DTBO peak-brightness patcher.
 
 ## What It Does
 
